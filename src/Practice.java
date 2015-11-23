@@ -8,6 +8,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -63,12 +64,23 @@ public class Practice {
 		    Object obj = JSONValue.parse(readAll(br));
 		    JSONObject jsonObject = (JSONObject) obj;
 		    
-		    JSONArray objInfo = (JSONArray) ((JSONArray) jsonObject.get("tuc"));
-		    JSONArray info = (JSONArray) objInfo;
-		    
+		    JSONArray info = (JSONArray) ((JSONArray) jsonObject.get("tuc"));
+
 		    if(info.size() > 0) {
-		    	translate = (String) ((JSONObject)((JSONObject) info.get(0)).get("phrase")).get("text");
-		    	desc = (String) ((JSONObject)((JSONArray) ((JSONObject) info.get(0)).get("meanings")).get(0)).get("text");
+		    	JSONObject translateObj = (JSONObject) info.get(0);
+		    	
+		    	if(translateObj.containsKey("phrase")) {
+		    		translate = (String) ((JSONObject) translateObj.get("phrase")).get("text");
+		    	} else if(translateObj.containsKey("text")) {
+		    		translate = (String) translateObj.get("text");
+		    	} else {
+		    		translate = "Pfff";
+		    	}
+		    	
+		    	if(((JSONObject) info.get(0)).get("meanings") != null) {
+		    		desc = (String) ((JSONObject)((JSONArray) ((JSONObject) info.get(0)).get("meanings")).get(0)).get("text");
+		    	}
+		    	
 		    }
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

@@ -81,6 +81,7 @@ public class PracticeView extends GridPane {
 		
 		txtTrad.setEditable(false);
 		txtDescTrad.setEditable(false);
+		txtDescTrad.setWrapText(true);
 		
 		txtTrad.setAlignment(Pos.CENTER);
 		
